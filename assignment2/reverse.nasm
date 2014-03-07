@@ -86,6 +86,9 @@ _start:
 				; password read.
 	lea rsi, [rsp-0x10]     ; load the address of *buf
 	add dl, 0x10		; number of bytes to read.
+				; not required for successful auth
+				; is required for exit() to not
+				; SIGSEGV the whole thing.
 	syscall			; Do it.
 
 	;
